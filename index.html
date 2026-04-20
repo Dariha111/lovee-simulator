@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💍 Couple Simulator</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Poppins:wght@300;500;700&display=swap');
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ffd6e7,#fff3f7);
+font-family:Poppins;
+overflow:hidden;
+}
+
+.house{
+width:92%;
+max-width:500px;
+background:rgba(255,255,255,0.8);
+backdrop-filter:blur(10px);
+border-radius:25px;
+padding:20px;
+text-align:center;
+box-shadow:0 10px 35px rgba(0,0,0,0.1);
+position:relative;
+}
+
+.sceneTitle{
+font-family:"Playfair Display";
+font-style:italic;
+font-size:24px;
+margin-bottom:10px;
+color:#ff4f93;
+}
+
+.sceneText{
+font-size:18px;
+margin:15px 0;
+min-height:60px;
+color:#444;
+}
+
+.room{
+position:relative;
+height:220px;
+margin:10px 0;
+}
+
+/* characters */
+.char{
+width:90px;
+position:absolute;
+bottom:0;
+transition:0.5s;
+image-rendering: pixelated;
+}
+
+#you{ left:20px; }
+#him{ right:20px; }
+
+/* buttons */
+button{
+width:100%;
+margin-top:8px;
+padding:12px;
+border:none;
+border-radius:40px;
+cursor:pointer;
+font-size:15px;
+}
+
+.a{background:#ff6fae;color:white}
+.b{background:#eee}
+
+.small{
+font-size:12px;
+opacity:0.6;
+margin-top:10px;
+}
+
+/* hearts animation */
+.heart{
+position:absolute;
+top:0;
+font-size:20px;
+animation:float 2s infinite ease-in-out;
+}
+
+@keyframes float{
+0%{transform:translateY(0) scale(1);}
+50%{transform:translateY(-20px) scale(1.2);}
+100%{transform:translateY(0) scale(1);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="house">
+
+<div class="sceneTitle" id="title">morning ☀</div>
+
+<div class="room">
+<img id="you" class="char" src="you.png">
+<img id="him" class="char" src="him.png">
+</div>
+
+<div class="sceneText" id="text"></div>
+
+<button class="a" id="b1"></button>
+<button class="b" id="b2"></button>
+
+<div class="small">💗 married life simulator</div>
+
+</div>
+
+<script>
+
+let scene=0;
+let closeness=0;
+
+const title=document.getElementById("title");
+const text=document.getElementById("text");
+const b1=document.getElementById("b1");
+const b2=document.getElementById("b2");
+
+const you=document.getElementById("you");
+const him=document.getElementById("him");
+
+/* update positions */
+function updatePosition(){
+  you.style.transform=`translateX(${closeness}px)`;
+  him.style.transform=`translateX(-${closeness}px)`;
+}
+
+/* scenes */
+const data=[
+
+{
+t:"subha hogai aur apne goodmorning nahi bola🙂",
+opt1:"hug her 💗",
+opt2:"act asleep 😴",
+action1:()=>{
+text.innerText="aww... theek hai 😳💗";
+closeness+=20;
+updatePosition();
+},
+action2:()=>{
+text.innerText="wahh... seriously? 🙄";
+},
+title:"morning ☀"
+},
+
+{
+t:"breakfast ka scene... kuch bhi ready nahi hai 😭",
+opt1:"help her 🍳",
+opt2:"wait karte hain 😌",
+action1:()=>{
+text.innerText="finally helpful 😭💗";
+closeness+=20;
+updatePosition();
+},
+action2:()=>{
+text.innerText="lazy husband detected 🙄";
+}
+,title:"kitchen 🍳"
+},
+
+{
+t:"aapne shopping list yad rakhi?",
+opt1:"yes 🧠",
+opt2:"oops 😭",
+action1:()=>{
+text.innerText="impressive 😌💗";
+closeness+=20;
+updatePosition();
+},
+action2:()=>{
+text.innerText="we are not surviving this week 🙄";
+}
+,title:"market 🛒"
+},
+
+{
+t:"main apse naraz hun",
+opt1:"say sorry 💗",
+opt2:"stay quiet 🙄",
+action1:()=>{
+text.innerText="acha... maaf kiya 😌💗";
+closeness+=20;
+updatePosition();
+},
+action2:()=>{
+text.innerText="hmm... interesting behavior 😒";
+}
+,title:"fight 😶"
+},
+
+{
+t:"raat ho gayi hai... ab kya?",
+opt1:"talk 💗",
+opt2:"sleep 😴",
+action1:()=>{
+text.innerText="soft moment 😭💗";
+closeness+=20;
+updatePosition();
+},
+action2:()=>{
+text.innerText="goodnight then 😌";
+}
+,title:"night 🌙"
+}
+
+];
+
+function load(){
+let s=data[scene];
+title.innerText=s.title;
+text.innerText=s.t;
+b1.innerText=s.opt1;
+b2.innerText=s.opt2;
+}
+
+b1.onclick=()=>{
+data[scene].action1();
+next();
+};
+
+b2.onclick=()=>{
+data[scene].action2();
+next();
+};
+
+function next(){
+setTimeout(()=>{
+scene++;
+if(scene>=data.length){
+end();
+return;
+}
+load();
+},900);
+}
+
+function end(){
+document.querySelector(".house").innerHTML=`
+<h2 style="font-family:Playfair Display;color:#ff4f93">
+💗 you survived married life 💗
+</h2>
+<p>now you're actually in love 😭💗</p>
+
+<div style="position:relative;height:150px;margin-top:20px;">
+  <img src="you.png" style="width:80px;position:absolute;left:40%;">
+  <img src="him.png" style="width:80px;position:absolute;left:55%;">
+
+  <div class="heart" style="left:50%;">💖</div>
+  <div class="heart" style="left:45%;">💗</div>
+  <div class="heart" style="left:55%;">💞</div>
+</div>
+`;
+}
+
+load();
+
+</script>
+
+</body>
+</html>
