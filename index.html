@@ -125,6 +125,7 @@ animation:float 2s infinite ease-in-out;
 
 let scene=0;
 let closeness=0;
+let score=0; // NEW
 
 const title=document.getElementById("title");
 const text=document.getElementById("text");
@@ -134,7 +135,6 @@ const b2=document.getElementById("b2");
 const you=document.getElementById("you");
 const him=document.getElementById("him");
 
-/* update positions */
 function updatePosition(){
   you.style.transform=`translateX(${closeness}px)`;
   him.style.transform=`translateX(-${closeness}px)`;
@@ -150,10 +150,14 @@ opt2:"act asleep 😴",
 action1:()=>{
 text.innerText="aww... theek hai 😳💗";
 closeness+=20;
+score++;
 updatePosition();
 },
 action2:()=>{
 text.innerText="wahh... seriously? 🙄";
+closeness-=10;
+score--;
+updatePosition();
 },
 title:"morning ☀"
 },
@@ -165,12 +169,16 @@ opt2:"wait karte hain 😌",
 action1:()=>{
 text.innerText="finally helpful 😭💗";
 closeness+=20;
+score++;
 updatePosition();
 },
 action2:()=>{
 text.innerText="lazy husband detected 🙄";
-}
-,title:"kitchen 🍳"
+closeness-=10;
+score--;
+updatePosition();
+},
+title:"kitchen 🍳"
 },
 
 {
@@ -180,12 +188,16 @@ opt2:"oops 😭",
 action1:()=>{
 text.innerText="impressive 😌💗";
 closeness+=20;
+score++;
 updatePosition();
 },
 action2:()=>{
 text.innerText="we are not surviving this week 🙄";
-}
-,title:"market 🛒"
+closeness-=10;
+score--;
+updatePosition();
+},
+title:"market 🛒"
 },
 
 {
@@ -195,12 +207,16 @@ opt2:"stay quiet 🙄",
 action1:()=>{
 text.innerText="acha... maaf kiya 😌💗";
 closeness+=20;
+score++;
 updatePosition();
 },
 action2:()=>{
 text.innerText="hmm... interesting behavior 😒";
-}
-,title:"fight 😶"
+closeness-=10;
+score--;
+updatePosition();
+},
+title:"fight 😶"
 },
 
 {
@@ -210,12 +226,16 @@ opt2:"sleep 😴",
 action1:()=>{
 text.innerText="soft moment 😭💗";
 closeness+=20;
+score++;
 updatePosition();
 },
 action2:()=>{
 text.innerText="goodnight then 😌";
-}
-,title:"night 🌙"
+closeness-=10;
+score--;
+updatePosition();
+},
+title:"night 🌙"
 }
 
 ];
@@ -249,20 +269,48 @@ load();
 },900);
 }
 
+/* 🔥 MULTIPLE ENDINGS */
 function end(){
-document.querySelector(".house").innerHTML=`
+
+let ending="";
+
+if(score >= 3){
+ending = `
 <h2 style="font-family:Playfair Display;color:#ff4f93">
-💗 you survived married life 💗
+💗 you’re in love 💗
 </h2>
-<p>now you're actually in love 😭💗</p>
+<p>green flag behavior 😭💗</p>
+`;
+}
+else if(score >= 1){
+ending = `
+<h2 style="font-family:Playfair Display;color:#ff4f93">
+🙂 it’s complicated 🙂
+</h2>
+<p>thoda effort aur chahiye 😌</p>
+`;
+}
+else{
+ending = `
+<h2 style="font-family:Playfair Display;color:#ff4f93">
+💔 relationship failed 💔
+</h2>
+<p>bhai kya kar rahe ho 😭</p>
+`;
+}
+
+document.querySelector(".house").innerHTML = `
+${ending}
 
 <div style="position:relative;height:150px;margin-top:20px;">
   <img src="you.png" style="width:80px;position:absolute;left:40%;">
   <img src="him.png" style="width:80px;position:absolute;left:55%;">
 
+  ${score >= 3 ? `
   <div class="heart" style="left:50%;">💖</div>
   <div class="heart" style="left:45%;">💗</div>
   <div class="heart" style="left:55%;">💞</div>
+  ` : ""}
 </div>
 `;
 }
@@ -270,6 +318,5 @@ document.querySelector(".house").innerHTML=`
 load();
 
 </script>
-
 </body>
 </html>
