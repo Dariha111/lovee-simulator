@@ -1,0 +1,2 @@
+# lovee-simulator
+for maano
